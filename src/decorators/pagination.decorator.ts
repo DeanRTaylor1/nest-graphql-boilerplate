@@ -1,7 +1,7 @@
 import { createParamDecorator, ExecutionContext } from '@nestjs/common';
 
 export interface Pagination {
-  skip: number;
+  offset: number;
   limit: number;
   sort?: Array<SortItem>;
   search?: Record<string, string>;
@@ -19,7 +19,7 @@ export const GetPagination = (_options?: {
       const query = request.query;
 
       const paginationParams: Pagination = {
-        skip: parseInt(query.skip?.toString()) || 0,
+        offset: parseInt(query.skip?.toString()) || 0,
         limit: parseInt(query.limit?.toString()) || 10,
       };
 

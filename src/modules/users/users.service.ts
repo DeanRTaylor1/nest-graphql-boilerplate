@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { UsersRepository } from './users.repository';
 import { Pagination } from 'src/decorators/pagination.decorator';
-import { CreateUserInput } from './graphql/create-user.input';
+import { CreateUserInput } from './dto/create-user.input';
 
 @Injectable()
 export class UsersService {
@@ -11,8 +11,8 @@ export class UsersService {
     return this.usersRepository.create(createUserInput);
   }
 
-  async findAll({ skip, limit }: Pagination) {
-    return this.usersRepository.getAll({ skip, limit });
+  async findAll({ offset, limit }: Pagination) {
+    return this.usersRepository.getAll({ offset, limit });
   }
 
   async findOne(id: number) {

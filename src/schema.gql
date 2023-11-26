@@ -1,0 +1,57 @@
+# ------------------------------------------------------
+# THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
+# ------------------------------------------------------
+
+input CreateUserInput {
+  email: String!
+  firstName: String!
+  lastName: String
+  password: String!
+  username: String!
+}
+
+type LoginResponse {
+  access_token: String!
+  user: UserObjectType!
+}
+
+input LoginUserInput {
+  email: String!
+  password: String!
+}
+
+type Mutation {
+  createUser(createUserData: CreateUserInput!): UserObjectType!
+  login(loginUserInput: LoginUserInput!): LoginResponse!
+}
+
+input PaginationInputType {
+  limit: Int! = 10
+  offset: Int! = 0
+}
+
+type Query {
+  getUser(userId: String!): UserObjectType!
+  getUsers(pagination: PaginationInputType!): [UserObjectType!]!
+}
+
+type UserObjectType {
+  email: String!
+  firstName: String!
+  id: String!
+  lastName: String
+  role: UserRole
+  status: UserStatus
+  username: String!
+}
+
+enum UserRole {
+  ADMIN
+  MANAGER
+  USER
+}
+
+enum UserStatus {
+  ACTIVE
+  INACTIVE
+}

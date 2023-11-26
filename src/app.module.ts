@@ -12,14 +12,17 @@ import { UsersResolver } from '@modules/users/users.resolver';
 import {
   CreateUserInput,
   UserObjectType,
-} from '@modules/users/graphql/create-user.input';
+} from '@modules/users/dto/create-user.input';
 import { User } from '@modules/users/user.entity';
+import { join } from 'path';
+import { AuthModule } from './modules/auth/auth.module';
 
 @Module({
   imports: [
     GraphQLModule.forRoot<ApolloDriverConfig>({
       driver: ApolloDriver,
-      autoSchemaFile: true,
+      autoSchemaFile: join(process.cwd(), 'src/schema.gql'),
+      sortSchema: true,
     }),
     ConfigModule,
     SequelizeModule.forRoot({
@@ -32,6 +35,7 @@ import { User } from '@modules/users/user.entity';
       models: [User],
     }),
     UsersModule,
+    AuthModule,
   ],
   controllers: [AppController],
   providers: [AppService, UsersResolver, UserObjectType, CreateUserInput],

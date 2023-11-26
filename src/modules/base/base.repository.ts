@@ -13,10 +13,9 @@ export abstract class BaseRepository<M extends Model> {
     return this.model.findByPk(id);
   }
 
-  async getAll({ skip, limit }): Promise<Array<M>> {
-    return this.model.findAll({ offset: skip, limit });
+  async getAll({ offset, limit }): Promise<Array<M>> {
+    return this.model.findAll({ offset, limit });
   }
-
   async destroyById(id: number): Promise<number> {
     const where: WhereOptions = { id };
     return this.model.destroy({ where });
