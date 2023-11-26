@@ -27,10 +27,10 @@ module.exports = {
         allowNull: false,
         unique: true,
       },
-      hashedPassword: {
+      password: {
         type: Sequelize.STRING,
         allowNull: false,
-        field: 'hashed_password',
+        field: 'password',
       },
       status: {
         type: Sequelize.ENUM('active', 'inactive'),

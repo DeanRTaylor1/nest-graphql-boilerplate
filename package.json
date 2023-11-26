@@ -21,7 +21,8 @@
     "pg": "docker run --name postgres16 -p 5432:5432 -e POSTGRES_USER=root -e POSTGRES_PASSWORD=secret -d postgres:16-alpine",
     "createdb": "sleep 5 && docker exec postgres16 createdb --username=root --owner=root dev_db",
     "be:cleanup": "docker stop postgres16 && docker rm postgres16",
-    "db:setup": "sequelize-cli db:migrate --config src/databases/config/config.js"
+    "db:setup": "sequelize-cli db:migrate --config src/databases/config/config.js",
+    "run:be": "yarn be:cleanup; yarn pg && yarn createdb && yarn db:setup && yarn start:dev"
   },
   "dependencies": {
     "@apollo/server": "^4.9.5",

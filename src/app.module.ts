@@ -9,6 +9,11 @@ import { env } from '@modules/config/env';
 import { Dialect } from 'sequelize';
 import { UsersModule } from './modules/users/users.module';
 import { UsersResolver } from '@modules/users/users.resolver';
+import {
+  CreateUserInput,
+  UserObjectType,
+} from '@modules/users/graphql/create-user.input';
+import { User } from '@modules/users/user.entity';
 
 @Module({
   imports: [
@@ -24,11 +29,11 @@ import { UsersResolver } from '@modules/users/users.resolver';
       username: env.db.username,
       password: env.db.password,
       database: env.db.database,
-      models: [],
+      models: [User],
     }),
     UsersModule,
   ],
   controllers: [AppController],
-  providers: [AppService, UsersResolver],
+  providers: [AppService, UsersResolver, UserObjectType, CreateUserInput],
 })
 export class AppModule {}
