@@ -1,5 +1,9 @@
 import { UsersService } from '@modules/users/users.service';
-import { Injectable } from '@nestjs/common';
+import {
+  BadRequestException,
+  Injectable,
+  UnauthorizedException,
+} from '@nestjs/common';
 import { User } from '@modules/users/user.entity';
 import { JwtService } from '@nestjs/jwt';
 import { randomBytes } from 'crypto';
@@ -12,14 +16,25 @@ export class AuthService {
     private jwtService: JwtService,
   ) {}
 
-  async validateUser(email: string, password: string): Promise<any> {
+  async validateUser(email: string, suppliedPassword: string): Promise<any> {
     const user = await this.usersService.findByEmail(email);
 
-    if (user && user.password === password) {
-      const { password, ...rest } = user.get();
-      return rest;
+    if (!user) {
+      throw new BadRequestException('User not found');
     }
-    return null;
+
+    const isMatch = await this.compare({
+      storedPassword: user.password,
+      suppliedPassword,
+    });
+
+    if (!isMatch) {
+      throw new UnauthorizedException('Incorrect password');
+    }
+
+    const { password, ...rest } = user.get();
+
+    return rest;
   }
 
   async login(user: User) {

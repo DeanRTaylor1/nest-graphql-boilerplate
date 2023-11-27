@@ -1,6 +1,6 @@
-import { Args, Mutation, Query, Resolver } from '@nestjs/graphql';
+import { Args, Query, Resolver } from '@nestjs/graphql';
 import { UsersService } from './users.service';
-import { CreateUserInput, UserObjectType } from './dto/create-user.input';
+import { UserObjectType } from './dto/create-user.input';
 import { PaginationInputType } from '@modules/base/pagination.type';
 import { User } from './user.entity';
 import { UseGuards } from '@nestjs/common';
@@ -19,10 +19,5 @@ export class UsersResolver {
   @Query(() => UserObjectType)
   async getUser(@Args('userId') userId: string) {
     return await this.usersService.findOne(Number(userId));
-  }
-
-  @Mutation(() => UserObjectType)
-  async createUser(@Args('createUserData') createUserData: CreateUserInput) {
-    return this.usersService.create(createUserData);
   }
 }
