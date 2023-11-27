@@ -2,6 +2,8 @@ import { UsersService } from '@modules/users/users.service';
 import { Injectable } from '@nestjs/common';
 import { User } from '@modules/users/user.entity';
 import { JwtService } from '@nestjs/jwt';
+import { randomBytes } from 'crypto';
+import { scryptAsync } from './utils/auth.utils';
 
 @Injectable()
 export class AuthService {
@@ -27,5 +29,23 @@ export class AuthService {
       access_token,
       user,
     };
+  }
+
+  public async hashPassword(password: string): Promise<string> {
+    const salt = randomBytes(8).toString('hex');
+    const derivedKey = await scryptAsync(password, salt, 64);
+    return `${derivedKey.toString('hex')}.${salt}`;
+  }
+
+  public async compare({
+    storedPassword,
+    suppliedPassword,
+  }: {
+    storedPassword: string;
+    suppliedPassword: string;
+  }): Promise<boolean> {
+    const [hashedPassword, salt] = storedPassword.split('.');
+    const derivedKey = await scryptAsync(suppliedPassword, salt, 64);
+    return derivedKey.toString('hex') === hashedPassword;
   }
 }
