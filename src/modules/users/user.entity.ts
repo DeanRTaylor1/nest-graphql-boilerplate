@@ -9,6 +9,7 @@ import {
   Default,
   DataType,
 } from 'sequelize-typescript';
+
 import { RoleEnum, UserStatusEnum } from './user.enum';
 
 @Table({ tableName: 'users', timestamps: true, underscored: true })

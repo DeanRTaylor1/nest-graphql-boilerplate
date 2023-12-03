@@ -1,12 +1,15 @@
-import { UsersService } from '@modules/users/users.service';
+import { randomBytes } from 'crypto';
+
 import {
   BadRequestException,
   Injectable,
   UnauthorizedException,
 } from '@nestjs/common';
-import { User } from '@modules/users/user.entity';
 import { JwtService } from '@nestjs/jwt';
-import { randomBytes } from 'crypto';
+
+import { User } from '@modules/users/user.entity';
+import { UsersService } from '@modules/users/users.service';
+
 import { scryptAsync } from './utils/auth.utils';
 
 @Injectable()

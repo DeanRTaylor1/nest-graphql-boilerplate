@@ -4,6 +4,7 @@ import {
   ArgumentMetadata,
   BadRequestException,
 } from '@nestjs/common';
+
 import { AuthService } from '@modules/auth/auth.service';
 import { CreateUserInput } from '@modules/users/dto/create-user.input';
 

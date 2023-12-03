@@ -1,7 +1,9 @@
 import { Injectable } from '@nestjs/common';
-import { UsersRepository } from './users.repository';
-import { Pagination } from 'src/decorators/pagination.decorator';
+
+import { Pagination } from '@modules/base/pagination.type';
+
 import { CreateUserInput } from './dto/create-user.input';
+import { UsersRepository } from './users.repository';
 
 @Injectable()
 export class UsersService {
@@ -11,8 +13,8 @@ export class UsersService {
     return this.usersRepository.create(createUserInput);
   }
 
-  async findAll({ offset, limit }: Pagination) {
-    return this.usersRepository.getAll({ offset, limit });
+  async findAll({ offset, limit }: Pagination, attributes?: Array<string>) {
+    return this.usersRepository.getAll({ offset, limit, attributes });
   }
 
   async findOne(id: number) {

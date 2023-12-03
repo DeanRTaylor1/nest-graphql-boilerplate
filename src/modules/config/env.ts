@@ -1,6 +1,8 @@
-import * as dotenv from 'dotenv';
-import { getOsEnv, getOsEnvOptional } from './utils';
 import * as path from 'node:path';
+
+import * as dotenv from 'dotenv';
+
+import { getOsEnv, getOsEnvOptional } from './utils';
 
 dotenv.config({
   path: path.join(

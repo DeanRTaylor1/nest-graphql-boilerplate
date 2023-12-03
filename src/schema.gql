@@ -2,6 +2,13 @@
 # THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
 # ------------------------------------------------------
 
+input CreateProductInput {
+  description: String!
+  name: String!
+  price: Float!
+  quantity: Int!
+}
+
 input CreateUserInput {
   email: String!
   firstName: String!
@@ -9,6 +16,11 @@ input CreateUserInput {
   password: String!
   username: String!
 }
+
+"""
+A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date-time format.
+"""
+scalar DateTime
 
 type LoginResponse {
   access_token: String!
@@ -21,18 +33,46 @@ input LoginUserInput {
 }
 
 type Mutation {
+  createProduct(createProductInput: CreateProductInput!): Product!
   createUser(createUserData: CreateUserInput!): UserObjectType!
   login(loginUserInput: LoginUserInput!): LoginResponse!
+  removeProduct(id: Int!): Product!
+  updateProduct(updateProductInput: UpdateProductInput!): Product!
 }
 
-input PaginationInputType {
+type PaginatedProductResponse {
+  count: Int!
+  items: [Product!]!
+}
+
+input Pagination {
   limit: Int! = 10
   offset: Int! = 0
 }
 
+type Product {
+  createdAt: DateTime!
+  description: String!
+  id: Int!
+  name: String!
+  price: Float!
+  quantity: Int!
+  updatedAt: DateTime!
+}
+
 type Query {
   getUser(userId: String!): UserObjectType!
-  getUsers(pagination: PaginationInputType!): [UserObjectType!]!
+  getUsers(pagination: Pagination!): [UserObjectType!]!
+  product(id: Int!): Product!
+  products(pagination: Pagination!): PaginatedProductResponse!
+}
+
+input UpdateProductInput {
+  description: String
+  id: Int!
+  name: String
+  price: Float
+  quantity: Int
 }
 
 type UserObjectType {

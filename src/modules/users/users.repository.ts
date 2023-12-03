@@ -1,6 +1,8 @@
+import { InjectModel } from '@nestjs/sequelize';
+
 import { BaseRepository } from '@modules/base/base.repository';
 import { ICreateAttributes } from '@modules/base/global.types';
-import { InjectModel } from '@nestjs/sequelize';
+
 import { User } from './user.entity';
 
 export class UsersRepository extends BaseRepository<User> {

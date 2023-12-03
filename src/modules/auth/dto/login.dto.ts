@@ -1,5 +1,6 @@
-import { UserObjectType } from '@modules/users/dto/create-user.input';
 import { Field, ObjectType } from '@nestjs/graphql';
+
+import { UserObjectType } from '@modules/users/dto/create-user.input';
 
 @ObjectType()
 export class LoginResponse {

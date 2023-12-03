@@ -9,6 +9,10 @@ module.exports = {
   extends: [
     'plugin:@typescript-eslint/recommended',
     'plugin:prettier/recommended',
+    'plugin:import/errors',
+    'plugin:import/warnings',
+    'plugin:import/typescript',
+    'prettier',
   ],
   root: true,
   env: {
@@ -32,5 +36,19 @@ module.exports = {
       },
     ],
     'max-params': ['error', 2],
+    'import/order': [
+      'error',
+      {
+        groups: ['builtin', 'external', 'internal'],
+        'newlines-between': 'always',
+        alphabetize: { order: 'asc', caseInsensitive: true },
+      },
+    ],
+    'import/newline-after-import': 'error',
+  },
+  settings: {
+    'import/resolver': {
+      typescript: {},
+    },
   },
 };

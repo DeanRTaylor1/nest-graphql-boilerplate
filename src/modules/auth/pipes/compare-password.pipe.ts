@@ -1,4 +1,3 @@
-import { UsersService } from '@modules/users/users.service';
 import {
   PipeTransform,
   Injectable,
@@ -6,6 +5,9 @@ import {
   BadRequestException,
   UnauthorizedException,
 } from '@nestjs/common';
+
+import { UsersService } from '@modules/users/users.service';
+
 import { AuthService } from '../auth.service';
 import { LoginUserInput } from '../dto/login-user.input';
 

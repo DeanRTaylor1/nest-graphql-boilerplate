@@ -1,10 +1,13 @@
-import { Args, Query, Resolver } from '@nestjs/graphql';
-import { UsersService } from './users.service';
-import { UserObjectType } from './dto/create-user.input';
-import { PaginationInputType } from '@modules/base/pagination.type';
-import { User } from './user.entity';
 import { UseGuards } from '@nestjs/common';
+import { Args, Info, Query, Resolver } from '@nestjs/graphql';
+
 import { JwtAuthGuard } from '@modules/auth/guards/jwt-auth.guard';
+import { Pagination } from '@modules/base/pagination.type';
+import { ExtractFieldsPipe } from 'src/pipes/ExtractFields.pipe';
+
+import { UserObjectType } from './dto/create-user.input';
+import { User } from './user.entity';
+import { UsersService } from './users.service';
 
 @Resolver(() => User)
 export class UsersResolver {
@@ -12,8 +15,11 @@ export class UsersResolver {
 
   @Query(() => [UserObjectType])
   @UseGuards(JwtAuthGuard)
-  async getUsers(@Args('pagination') { offset, limit }: PaginationInputType) {
-    return this.usersService.findAll({ offset, limit });
+  async getUsers(
+    @Args('pagination') { offset, limit }: Pagination,
+    @Info(ExtractFieldsPipe) attributes: string[],
+  ) {
+    return this.usersService.findAll({ offset, limit }, attributes);
   }
 
   @Query(() => UserObjectType)
