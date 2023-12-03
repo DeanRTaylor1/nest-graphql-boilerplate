@@ -1,6 +1,8 @@
 import { Injectable } from '@nestjs/common';
 
 import { Pagination } from '@modules/base/pagination.type';
+import { env } from '@modules/config/env';
+import { RabbitMQService } from '@modules/rmq/RabbitMQ.service';
 
 import { CreateProductInput } from './dto/create-product.input';
 import { UpdateProductInput } from './dto/update-product.input';
@@ -8,9 +10,18 @@ import { ProductsRepository } from './products.repository';
 
 @Injectable()
 export class ProductsService {
-  constructor(private productsRepository: ProductsRepository) {}
+  constructor(
+    private productsRepository: ProductsRepository,
+    private rabbitMqService: RabbitMQService,
+  ) {}
 
   async create(createProductInput: CreateProductInput) {
+    const result = await this.rabbitMqService.sendMessage(
+      env.RabbitMq.ordersQueue,
+      JSON.stringify(createProductInput),
+    );
+    // await this.rabbitMqService.processMessages();
+    console.log(result);
     return this.productsRepository.create(createProductInput);
   }
 

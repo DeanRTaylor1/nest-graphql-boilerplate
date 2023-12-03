@@ -19,11 +19,12 @@
     "test:debug": "node --inspect-brk -r tsconfig-paths/register -r ts-node/register node_modules/.bin/jest --runInBand",
     "test:e2e": "jest --config ./test/jest-e2e.json",
     "pg": "docker run --name postgres16 -p 5432:5432 -e POSTGRES_USER=root -e POSTGRES_PASSWORD=secret -d postgres:16-alpine",
+    "rmq": "docker run -d --name rabbitmq -p 5672:5672 -p 15672:15672 -e RABBITMQ_DEFAULT_USER=user -e RABBITMQ_DEFAULT_PASS=password rabbitmq:3-management",
     "createdb": "sleep 5 && docker exec postgres16 createdb --username=root --owner=root dev_db",
     "be:cleanup": "docker stop postgres16 && docker rm postgres16",
     "db:setup": "npx sequelize-cli db:migrate --config src/databases/config/config.js",
     "db:seed": "npx sequelize-cli db:seed:all --config src/databases/config/config.js",
-    "run:be": "yarn be:cleanup; yarn pg && yarn createdb && yarn db:setup && yarn db:seed && yarn start:dev"
+    "run:be": "yarn rmq; yarn be:cleanup; yarn pg && yarn createdb && yarn db:setup && yarn db:seed && yarn start:dev"
   },
   "dependencies": {
     "@apollo/server": "^4.9.5",
@@ -44,6 +45,7 @@
     "dotenv": "^16.3.1",
     "graphql": "^16.8.1",
     "graphql-tools": "^9.0.0",
+    "nest-winston": "^1.9.4",
     "passport": "^0.6.0",
     "passport-jwt": "^4.0.1",
     "passport-local": "^1.0.0",
@@ -52,12 +54,15 @@
     "reflect-metadata": "^0.1.13",
     "rxjs": "^7.8.1",
     "sequelize": "^6.35.1",
-    "sequelize-typescript": "^2.1.6"
+    "sequelize-typescript": "^2.1.6",
+    "winston": "^3.11.0",
+    "winston-daily-rotate-file": "^4.7.1"
   },
   "devDependencies": {
     "@nestjs/cli": "^10.0.0",
     "@nestjs/schematics": "^10.0.0",
     "@nestjs/testing": "^10.0.0",
+    "@types/amqplib": "^0.10.4",
     "@types/express": "^4.17.17",
     "@types/jest": "^29.5.2",
     "@types/node": "^20.3.1",

@@ -55,6 +55,11 @@ const env = {
     type: getOsEnv('UPLOAD_TYPE'),
     disksDir: getOsEnv('DISKS_DIR') || '/public/uploads',
   },
+  RabbitMq: {
+    url: getOsEnv('RMQ_URL'),
+    port: getOsEnv('RMQ_PORT'),
+    ordersQueue: getOsEnv('RMQ_ORDERS_QUEUE'),
+  },
 };
 
 export { env };

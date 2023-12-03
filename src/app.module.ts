@@ -1,7 +1,7 @@
 import { join } from 'path';
 
 import { ApolloDriver, ApolloDriverConfig } from '@nestjs/apollo';
-import { Module } from '@nestjs/common';
+import { Module, Logger } from '@nestjs/common';
 import { APP_FILTER } from '@nestjs/core';
 import { GraphQLModule } from '@nestjs/graphql';
 import { SequelizeModule } from '@nestjs/sequelize';
@@ -10,7 +10,7 @@ import { Dialect } from 'sequelize';
 import { ConfigModule } from '@config/config.module';
 import { env } from '@modules/config/env';
 import { Product } from '@modules/products/entities/product.entity';
-import { RabbitMQModule } from '@modules/rabbitmq/rabbitmq.module';
+import { RabbitMQModule } from '@modules/rmq/RabbitMQ.module';
 import {
   CreateUserInput,
   UserObjectType,
@@ -49,6 +49,7 @@ import { UsersModule } from './modules/users/users.module';
   ],
   controllers: [AppController],
   providers: [
+    Logger,
     AppService,
     UsersResolver,
     UserObjectType,

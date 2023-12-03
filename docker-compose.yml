@@ -1,0 +1,46 @@
+version: '3'
+
+services:
+  postgres:
+    image: postgres:16-alpine
+    environment:
+      - POSTGRES_USER=root
+      - POSTGRES_PASSWORD=secret
+      - POSTGRES_DB=dev_db
+    healthcheck:
+      test: ['CMD-SHELL', 'pg_isready -U root -d dev_db']
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    ports:
+      - '5432:5432'
+
+  #Nest JS app
+  api:
+    build:
+      context: .
+      dockerfile: ${DOCKERFILE_NAME}
+    volumes:
+      - ./:/app
+      - ./src/lib/debug/logs:/app/src/lib/debug/logs
+    ports:
+      - 3000:3000 # API Entry port
+      - 4311:4311 # Server Debugging port
+    environment:
+      - DB_SOURCE=postgresql://root:secret@postgres:5432/dev_db?sslmode=disable
+    depends_on:
+      postgres:
+        condition: service_healthy
+
+  rabbitmq:
+    image: rabbitmq:3-management
+    environment:
+      - RABBITMQ_DEFAULT_USER=user
+      - RABBITMQ_DEFAULT_PASS=password
+    ports:
+      - '5672:5672' # AMQP protocol port
+      - '15672:15672' # Management UI port
+    healthcheck:
+      test: ['CMD', 'rabbitmqctl', 'status']
+      interval: 30s
+      timeout: 10s
